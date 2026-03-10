@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fiton Me — Alimentação Que Transforma</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-deep: #1a3a2a;
+      --green-mid: #2d6a4f;
+      --green-bright: #52b788;
+      --green-light: #95d5b2;
+      --cream: #f8f4ed;
+      --cream-dark: #ede8de;
+      --orange: #e07b39;
+      --gold: #c9a84c;
+      --text-dark: #1a1a18;
+      --text-mid: #3d3d38;
+      --text-soft: #6e6e66;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--green-bright);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+      mix-blend-mode: multiply;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--green-mid);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, width 0.3s, height 0.3s, border-color 0.3s;
+      opacity: 0.6;
+    }
+    body:has(a:hover) .cursor-ring,
+    body:has(button:hover) .cursor-ring { width: 54px; height: 54px; border-color: var(--orange); }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 22px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.5s, padding 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(248, 244, 237, 0.92);
+      backdrop-filter: blur(14px);
+      padding: 14px 48px;
+      border-bottom: 1px solid rgba(45,106,79,0.1);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      color: var(--green-deep);
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--green-bright); }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-mid);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      position: relative;
+      padding-bottom: 4px;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1.5px;
+      background: var(--green-bright);
+      transition: width 0.35s ease;
+    }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      background: var(--green-deep);
+      color: var(--cream) !important;
+      padding: 10px 24px;
+      border-radius: 50px;
+      transition: background 0.3s !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--green-mid) !important; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      background: var(--green-deep);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 120px 64px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-left::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(82,183,136,0.18) 0%, transparent 70%);
+      top: -100px; left: -100px;
+      animation: pulse-glow 5s ease-in-out infinite;
+    }
+    .hero-left::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+      bottom: 80px; right: -50px;
+      animation: pulse-glow 7s ease-in-out infinite reverse;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green-bright);
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--cream);
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.9s 0.5s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--green-bright);
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(248,244,237,0.7);
+      max-width: 400px;
+      margin-bottom: 44px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.9s 0.7s forwards;
+    }
+    .hero-btns {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.9s 0.9s forwards;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--green-bright);
+      color: var(--green-deep);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 15px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+      letter-spacing: 0.02em;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(82,183,136,0.4);
+      background: var(--green-light);
+    }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent;
+      color: var(--cream);
+      font-weight: 500;
+      font-size: 0.9rem;
+      padding: 15px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      border: 1px solid rgba(248,244,237,0.3);
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--green-bright);
+      background: rgba(82,183,136,0.08);
+    }
+
+    .hero-stats {
+      display: flex; gap: 40px;
+      margin-top: 60px;
+      opacity: 0;
+      animation: fadeUp 0.9s 1.1s forwards;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--green-bright);
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: rgba(248,244,237,0.5);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* HERO RIGHT */
+    .hero-right {
+      position: relative;
+      background: var(--cream-dark);
+      overflow: hidden;
+    }
+    .hero-visual-grid {
+      position: absolute; inset: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 3px;
+    }
+    .visual-cell {
+      overflow: hidden;
+      position: relative;
+    }
+    .visual-cell img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+      transform: scale(1.05);
+      animation: subtle-zoom 12s ease-in-out infinite alternate;
+    }
+    .visual-cell:nth-child(2) img { animation-delay: -3s; }
+    .visual-cell:nth-child(3) img { animation-delay: -6s; }
+    .visual-cell:nth-child(4) img { animation-delay: -9s; }
+    @keyframes subtle-zoom {
+      from { transform: scale(1.05); }
+      to { transform: scale(1.12); }
+    }
+    .visual-cell::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(26,58,42,0.3), transparent);
+      pointer-events: none;
+    }
+    .hero-badge {
+      position: absolute; bottom: 40px; right: 40px;
+      background: var(--cream);
+      border-radius: 20px;
+      padding: 20px 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      z-index: 10;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .hero-badge-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--green-deep);
+    }
+    .hero-badge-sub {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+      letter-spacing: 0.05em;
+    }
+    .badge-dot { color: var(--green-bright); margin-right: 6px; }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* MARQUEE */
+    .marquee-section {
+      background: var(--green-bright);
+      padding: 18px 0;
+      overflow: hidden;
+    }
+    .marquee-track {
+      display: flex; gap: 0;
+      animation: marquee 22s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee-item {
+      display: inline-flex; align-items: center; gap: 16px;
+      padding: 0 32px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green-deep);
+    }
+    .marquee-dot { width: 5px; height: 5px; background: var(--green-deep); border-radius: 50%; opacity: 0.5; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* SECTION BASE */
+    section { padding: 100px 48px; }
+
+    .section-label {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green-mid);
+      margin-bottom: 18px;
+    }
+    .section-label::before {
+      content: '';
+      width: 24px; height: 1.5px;
+      background: var(--green-bright);
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text-dark);
+    }
+    .section-title em { font-style: italic; color: var(--green-mid); }
+
+    /* ABOUT */
+    .about {
+      background: var(--cream);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .about-visual {
+      position: relative;
+    }
+    .about-img-main {
+      width: 100%;
+      height: 520px;
+      object-fit: cover;
+      border-radius: 24px;
+      display: block;
+    }
+    .about-img-accent {
+      position: absolute;
+      bottom: -30px; right: -30px;
+      width: 200px; height: 200px;
+      object-fit: cover;
+      border-radius: 20px;
+      border: 6px solid var(--cream);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+      animation: float 5s ease-in-out infinite;
+    }
+    .about-pill {
+      position: absolute;
+      top: 30px; left: -20px;
+      background: var(--green-deep);
+      color: var(--cream);
+      padding: 12px 20px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+      animation: float 6s 1s ease-in-out infinite;
+    }
+    .about-text { padding-right: 20px; }
+    .about-text p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-mid);
+      margin-top: 20px;
+    }
+    .about-features {
+      margin-top: 36px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .feature-card {
+      background: var(--cream-dark);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid rgba(45,106,79,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(45,106,79,0.1);
+    }
+    .feature-icon { font-size: 1.6rem; margin-bottom: 8px; }
+    .feature-title { font-weight: 700; font-size: 0.9rem; color: var(--green-deep); }
+    .feature-desc { font-size: 0.8rem; color: var(--text-soft); margin-top: 4px; line-height: 1.5; }
+
+    /* CARDAPIO */
+    .menu-section {
+      background: var(--green-deep);
+      padding: 100px 48px;
+    }
+    .menu-header {
+      max-width: 1300px; margin: 0 auto 60px;
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .menu-header .section-title { color: var(--cream); }
+    .menu-header .section-label { color: var(--green-bright); }
+    .menu-header .section-label::before { background: var(--green-bright); }
+    .menu-filters {
+      display: flex; gap: 10px;
+    }
+    .filter-btn {
+      background: transparent;
+      border: 1px solid rgba(248,244,237,0.2);
+      color: rgba(248,244,237,0.6);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: none;
+      transition: all 0.3s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--green-bright);
+      border-color: var(--green-bright);
+      color: var(--green-deep);
+    }
+    .menu-grid {
+      max-width: 1300px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .menu-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.4s, background 0.4s, box-shadow 0.4s;
+      position: relative;
+    }
+    .menu-card:hover {
+      transform: translateY(-8px);
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.3);
+    }
+    .menu-card-img {
+      height: 180px;
+      background: linear-gradient(135deg, var(--green-mid), var(--green-bright));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+      overflow: hidden;
+      position: relative;
+    }
+    .menu-card-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(26,58,42,0.5));
+    }
+    .menu-card-body { padding: 20px; }
+    .menu-card-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green-bright);
+      margin-bottom: 6px;
+    }
+    .menu-card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.3;
+    }
+    .menu-card-desc {
+      font-size: 0.8rem;
+      color: rgba(248,244,237,0.55);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+    .menu-card-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 16px;
+    }
+    .menu-card-cal {
+      font-size: 0.75rem;
+      color: var(--green-bright);
+      font-weight: 600;
+    }
+    .menu-card-btn {
+      width: 32px; height: 32px;
+      background: var(--green-bright);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      color: var(--green-deep);
+      font-weight: 700;
+      cursor: none;
+      transition: transform 0.3s, background 0.3s;
+      border: none;
+    }
+    .menu-card:hover .menu-card-btn {
+      transform: scale(1.15);
+      background: var(--green-light);
+    }
+
+    /* FRANQUIA */
+    .franquia {
+      max-width: 1300px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .franquia-steps { margin-top: 40px; }
+    .step {
+      display: flex; gap: 20px; align-items: flex-start;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(45,106,79,0.1);
+      transition: all 0.3s;
+    }
+    .step:last-child { border-bottom: none; }
+    .step:hover .step-num { background: var(--green-mid); color: var(--cream); }
+    .step-num {
+      min-width: 40px; height: 40px;
+      background: var(--cream-dark);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--green-mid);
+      transition: all 0.3s;
+    }
+    .step-title { font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+    .step-desc { font-size: 0.85rem; color: var(--text-soft); line-height: 1.5; }
+    .franquia-visual {
+      position: relative;
+    }
+    .franquia-card-stack {
+      position: relative;
+      height: 450px;
+    }
+    .fcard {
+      position: absolute;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    }
+    .fcard-1 {
+      width: 280px; height: 360px;
+      background: linear-gradient(145deg, var(--green-mid), var(--green-deep));
+      top: 0; left: 0;
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 30px;
+      animation: float 5s ease-in-out infinite;
+    }
+    .fcard-2 {
+      width: 240px; height: 300px;
+      background: var(--cream);
+      bottom: 0; right: 0;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      padding: 30px; text-align: center;
+      animation: float 6s 1s ease-in-out infinite;
+    }
+    .fcard-1-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.3;
+    }
+    .fcard-1-sub { font-size: 0.8rem; color: var(--green-light); margin-top: 8px; }
+    .fcard-2-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--green-deep);
+      line-height: 1;
+    }
+    .fcard-2-label { font-size: 0.8rem; color: var(--text-soft); margin-top: 6px; }
+    .fcard-2-sub { font-size: 0.75rem; color: var(--green-mid); font-weight: 600; margin-top: 12px; }
+
+    /* TESTIMONIALS */
+    .testimonials {
+      background: var(--cream-dark);
+    }
+    .test-inner {
+      max-width: 1300px; margin: 0 auto;
+    }
+    .test-header {
+      text-align: center; margin-bottom: 60px;
+    }
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .test-card {
+      background: var(--cream);
+      border-radius: 20px;
+      padding: 32px;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid rgba(45,106,79,0.06);
+    }
+    .test-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(45,106,79,0.1);
+    }
+    .test-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      color: var(--green-bright);
+      line-height: 0.5;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .test-text {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-mid);
+      font-style: italic;
+    }
+    .test-author {
+      display: flex; align-items: center; gap: 12px;
+      margin-top: 24px;
+    }
+    .test-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--green-bright);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--green-deep);
+    }
+    .test-name { font-weight: 700; font-size: 0.9rem; color: var(--text-dark); }
+    .test-handle { font-size: 0.75rem; color: var(--text-soft); }
+    .test-stars { color: var(--gold); font-size: 0.85rem; margin-top: 2px; }
+
+    /* UNIDADES */
+    .unidades {
+      background: var(--green-deep);
+      padding: 100px 48px;
+    }
+    .unit-inner { max-width: 1300px; margin: 0 auto; }
+    .unit-header { margin-bottom: 60px; }
+    .unit-header .section-title { color: var(--cream); }
+    .unit-header .section-label { color: var(--green-bright); }
+    .unit-header .section-label::before { background: var(--green-bright); }
+    .unit-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .unit-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 28px;
+      transition: all 0.4s;
+    }
+    .unit-card:hover {
+      background: rgba(82,183,136,0.1);
+      border-color: var(--green-bright);
+      transform: translateY(-4px);
+    }
+    .unit-city {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+    .unit-state {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green-bright);
+      margin-bottom: 12px;
+    }
+    .unit-addr { font-size: 0.85rem; color: rgba(248,244,237,0.55); line-height: 1.5; }
+    .unit-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--green-bright);
+      text-decoration: none;
+      transition: gap 0.3s;
+    }
+    .unit-link:hover { gap: 10px; }
+
+    /* CTA */
+    .cta-section {
+      background: var(--cream);
+      text-align: center;
+      padding: 120px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(82,183,136,0.12), transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .cta-inner { position: relative; max-width: 700px; margin: 0 auto; }
+    .cta-inner .section-label { justify-content: center; }
+    .cta-inner .section-title { margin-bottom: 20px; }
+    .cta-inner p { font-size: 1.1rem; color: var(--text-soft); line-height: 1.7; margin-bottom: 44px; }
+    .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-dark {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--green-deep);
+      color: var(--cream);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 16px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .btn-dark:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(26,58,42,0.3);
+    }
+    .btn-outline-green {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent;
+      color: var(--green-mid);
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 16px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      border: 1.5px solid var(--green-bright);
+      transition: background 0.3s;
+    }
+    .btn-outline-green:hover {
+      background: rgba(82,183,136,0.08);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--text-dark);
+      padding: 60px 48px 30px;
+    }
+    .footer-inner {
+      max-width: 1300px; margin: 0 auto;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 60px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.8rem;
+      color: var(--cream);
+    }
+    .footer-logo span { color: var(--green-bright); }
+    .footer-tagline { font-size: 0.85rem; color: rgba(255,255,255,0.4); margin-top: 12px; line-height: 1.6; }
+    .footer-socials { display: flex; gap: 12px; margin-top: 24px; }
+    .social-btn {
+      width: 38px; height: 38px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .social-btn:hover { background: var(--green-bright); transform: translateY(-3px); }
+    .footer-col-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--green-bright);
+      margin-bottom: 20px;
+    }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--cream); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+    }
+    .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.25); }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .about, .franquia { grid-template-columns: 1fr; }
+      .menu-grid { grid-template-columns: repeat(2, 1fr); }
+      .test-grid { grid-template-columns: 1fr; }
+      .unit-grid { grid-template-columns: 1fr 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 18px 24px; }
+      .nav-links { display: none; }
+      section { padding: 70px 24px; }
+      .menu-section, .unidades { padding: 70px 24px; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .unit-grid { grid-template-columns: 1fr; }
+      .hero-left { padding: 120px 32px 70px; }
+      .footer-top { grid-template-columns: 1fr; gap: 36px; }
+    }
+
+    /* Emoji images for food */
+    .emoji-img {
+      font-size: 4rem;
+      display: flex; align-items: center; justify-content: center;
+      height: 100%; position: relative; z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-logo">Fiton<span>Me</span></div>
+    <ul class="nav-links">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#cardapio">Cardápio</a></li>
+      <li><a href="#franquia">Franquia</a></li>
+      <li><a href="#unidades">Unidades</a></li>
+      <li><a href="https://linktr.ee/unidadesfitonme" target="_blank" class="nav-cta">Seja Franqueado</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">🌱 Alimentação Que Transforma</div>
+      <h1 class="hero-title">
+        Viva<br/>
+        <em>saudável</em><br/>
+        com sabor
+      </h1>
+      <p class="hero-desc">
+        Açaí, smoothies, sucos naturais, bowls e muito mais. 
+        Comida que nutre o corpo e alimenta a alma — 
+        sem abrir mão do prazer.
+      </p>
+      <div class="hero-btns">
+        <a href="#cardapio" class="btn-primary">Ver Cardápio ↓</a>
+        <a href="#franquia" class="btn-secondary">Seja Franqueado</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Unidades</div>
+        </div>
+        <div>
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Natural</div>
+        </div>
+        <div>
+          <div class="stat-num">10+</div>
+          <div class="stat-label">Anos</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-visual-grid">
+        <div class="visual-cell" style="background:linear-gradient(135deg,#2d6a4f,#52b788);display:flex;align-items:center;justify-content:center;font-size:5rem;">🥤</div>
+        <div class="visual-cell" style="background:linear-gradient(135deg,#1a3a2a,#2d6a4f);display:flex;align-items:center;justify-content:center;font-size:5rem;">🍓</div>
+        <div class="visual-cell" style="background:linear-gradient(135deg,#52b788,#95d5b2);display:flex;align-items:center;justify-content:center;font-size:5rem;">🥑</div>
+        <div class="visual-cell" style="background:linear-gradient(135deg,#95d5b2,#52b788);display:flex;align-items:center;justify-content:center;font-size:5rem;">🫐</div>
+      </div>
+      <div class="hero-badge">
+        <div class="hero-badge-text"><span class="badge-dot">●</span>Fresco agora</div>
+        <div class="hero-badge-sub">Feito na hora para você</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track" id="marqueeTrack">
+      <span class="marquee-item">Açaí Puro <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Smoothies Naturais <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Sucos Detox <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Bowls Nutritivos <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Vitaminas <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Sem Conservantes <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Vida Saudável <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Feito com Amor <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Açaí Puro <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Smoothies Naturais <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Sucos Detox <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Bowls Nutritivos <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Vitaminas <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Sem Conservantes <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Vida Saudável <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Feito com Amor <span class="marquee-dot"></span></span>
+    </div>
+  </div>
+
+  <!-- SOBRE -->
+  <section id="sobre">
+    <div class="about">
+      <div class="about-visual reveal">
+        <div style="width:100%;height:520px;background:linear-gradient(145deg,#1a3a2a,#52b788);border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:8rem;">🥤</div>
+        <div class="about-pill">🌿 100% Natural</div>
+        <div style="position:absolute;bottom:-30px;right:-30px;width:200px;height:200px;background:linear-gradient(135deg,#f8f4ed,#ede8de);border-radius:20px;border:6px solid #f8f4ed;box-shadow:0 20px 50px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:center;font-size:4rem;animation:float 5s ease-in-out infinite;">🫐</div>
+      </div>
+      <div class="about-text">
+        <div class="section-label reveal">Nossa história</div>
+        <h2 class="section-title reveal reveal-delay-1">
+          Saúde não precisa ser<br/><em>sem sabor</em>
+        </h2>
+        <p class="reveal reveal-delay-2">
+          A Fiton Me nasceu da crença de que comer bem deve ser prazeroso. 
+          Somos uma rede de alimentação saudável com presença em todo o Brasil, 
+          oferecendo produtos frescos, naturais e deliciosos no dia a dia.
+        </p>
+        <p class="reveal reveal-delay-2">
+          Do açaí cremoso aos smoothies energizantes, cada produto é cuidadosamente 
+          preparado para trazer o melhor da natureza até você.
+        </p>
+        <div class="about-features">
+          <div class="feature-card reveal reveal-delay-1">
+            <div class="feature-icon">🌱</div>
+            <div class="feature-title">Ingredientes Naturais</div>
+            <div class="feature-desc">Sem conservantes, corantes artificiais ou aditivos químicos.</div>
+          </div>
+          <div class="feature-card reveal reveal-delay-2">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-title">Energia para o Dia</div>
+            <div class="feature-desc">Fórmulas ricas em nutrientes para manter seu desempenho.</div>
+          </div>
+          <div class="feature-card reveal reveal-delay-3">
+            <div class="feature-icon">🏆</div>
+            <div class="feature-title">Qualidade Garantida</div>
+            <div class="feature-desc">Padrão rigoroso em todas as nossas unidades franqueadas.</div>
+          </div>
+          <div class="feature-card reveal reveal-delay-4">
+            <div class="feature-icon">❤️</div>
+            <div class="feature-title">Feito com Cuidado</div>
+            <div class="feature-desc">Preparado na hora, fresquinho e com muito carinho.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARDÁPIO -->
+  <div class="menu-section" id="cardapio">
+    <div class="menu-header">
+      <div>
+        <div class="section-label">O que servimos</div>
+        <h2 class="section-title">Nosso <em style="color:var(--green-bright)">Cardápio</em></h2>
+      </div>
+      <div class="menu-filters">
+        <button class="filter-btn active">Todos</button>
+        <button class="filter-btn">Açaí</button>
+        <button class="filter-btn">Smoothies</button>
+        <button class="filter-btn">Sucos</button>
+      </div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-card reveal">
+        <div class="menu-card-img"><div class="emoji-img">🫐</div></div>
+        <div class="menu-card-body">
+          <div class="menu-card-tag">Açaí</div>
+          <div class="menu-card-name">Açaí Tradicional</div>
+          <div class="menu-card-desc">Açaí puro batido na hora com frutas frescas da estação.</div>
+          <div class="menu-card-footer">
+            <div class="menu-card-cal">~180 kcal</div>
+            <button class="menu-card-btn">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal reveal-delay-1">
+        <div class="menu-card-img"><div class="emoji-img">🥤</div></div>
+        <div class="menu-card-body">
+          <div class="menu-card-tag">Smoothie</div>
+          <div class="menu-card-name">Green Power</div>
+          <div class="menu-card-desc">Couve, abacaxi, gengibre, limão e mel. Detox completo.</div>
+          <div class="menu-card-footer">
+            <div class="menu-card-cal">~120 kcal</div>
+            <button class="menu-card-btn">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal reveal-delay-2">
+        <div class="menu-card-img"><div class="emoji-img">🍓</div></div>
+        <div class="menu-card-body">
+          <div class="menu-card-tag">Bowl</div>
+          <div class="menu-card-name">Berry Bowl</div>
+          <div class="menu-card-desc">Base de açaí com morango, granola artesanal e banana.</div>
+          <div class="menu-card-footer">
+            <div class="menu-card-cal">~280 kcal</div>
+            <button class="menu-card-btn">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal reveal-delay-3">
+        <div class="menu-card-img"><div class="emoji-img">🥑</div></div>
+        <div class="menu-card-body">
+          <div class="menu-card-tag">Vitamina</div>
+          <div class="menu-card-name">Avocado Shake</div>
+          <div class="menu-card-desc">Abacate, banana, leite vegetal e mel para energia total.</div>
+          <div class="menu-card-footer">
+            <div class="menu-card-cal">~210 kcal</div>
+            <button class="menu-card-btn">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img"><div class="emoji-img">🍊</div></div>
+        <div class="menu-card-body">
+          <div class="menu-card-tag">Suco</div>
+          <div class="menu-card-name">Laranja & Cenoura</div>
+          <div class="menu-card-desc">Suco natural prensado a frio com vitamina C e betacaroteno.</div>
+          <div class="menu-card-footer">
+            <div class="menu-card-cal">~95 kcal</div>
+            <button class="menu-card-btn">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal reveal-delay-1">
+        <div class="menu-card-img"><div class="emoji-img">🌿</div></div>
+        <div class="menu-card-body">
+          <div class="menu-card-tag">Detox</div>
+          <div class="menu-card-name">Água de Coco Detox</div>
+          <div class="menu-card-desc">Água de coco natural com pepino, hortelã e limão siciliano.</div>
+          <div class="menu-card-footer">
+            <div class="menu-card-cal">~60 kcal</div>
+            <button class="menu-card-btn">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal reveal-delay-2">
+        <div class="menu-card-img"><div class="emoji-img">🍌</div></div>
+        <div class="menu-card-body">
+          <div class="menu-card-tag">Vitamina</div>
+          <div class="menu-card-name">Whey Banana</div>
+          <div class="menu-card-desc">Banana, proteína whey, pasta de amendoim e leite.</div>
+          <div class="menu-card-footer">
+            <div class="menu-card-cal">~320 kcal</div>
+            <button class="menu-card-btn">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal reveal-delay-3">
+        <div class="menu-card-img"><div class="emoji-img">🫙</div></div>
+        <div class="menu-card-body">
+          <div class="menu-card-tag">Snack</div>
+          <div class="menu-card-name">Granola Mix</div>
+          <div class="menu-card-desc">Granola artesanal com frutas secas, castanhas e mel puro.</div>
+          <div class="menu-card-footer">
+            <div class="menu-card-cal">~150 kcal</div>
+            <button class="menu-card-btn">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRANQUIA -->
+  <section id="franquia">
+    <div class="franquia">
+      <div>
+        <div class="section-label reveal">Oportunidade</div>
+        <h2 class="section-title reveal reveal-delay-1">
+          Abra sua<br/><em>franquia</em><br/>Fiton Me
+        </h2>
+        <p class="reveal reveal-delay-2" style="margin-top:20px;font-size:1.05rem;color:var(--text-soft);line-height:1.8;">
+          Faça parte de uma rede em expansão no mercado de alimentação saudável. 
+          Invista em um negócio com propósito, suporte completo e alto potencial de retorno.
+        </p>
+        <div class="franquia-steps">
+          <div class="step reveal">
+            <div class="step-num">1</div>
+            <div>
+              <div class="step-title">Entre em contato</div>
+              <div class="step-desc">Preencha o formulário ou nos chame pelo WhatsApp para dar o primeiro passo.</div>
+            </div>
+          </div>
+          <div class="step reveal reveal-delay-1">
+            <div class="step-num">2</div>
+            <div>
+              <div class="step-title">Apresentação & proposta</div>
+              <div class="step-desc">Conheça o modelo de negócio, investimentos e projeções de retorno.</div>
+            </div>
+          </div>
+          <div class="step reveal reveal-delay-2">
+            <div class="step-num">3</div>
+            <div>
+              <div class="step-title">Treinamento completo</div>
+              <div class="step-desc">Suporte total desde a implantação até a operação diária da sua unidade.</div>
+            </div>
+          </div>
+          <div class="step reveal reveal-delay-3">
+            <div class="step-num">4</div>
+            <div>
+              <div class="step-title">Abertura & operação</div>
+              <div class="step-desc">Abra suas portas com todo suporte da rede Fiton Me ao seu lado.</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:40px;" class="reveal">
+          <a href="https://linktr.ee/unidadesfitonme" target="_blank" class="btn-primary" style="background:var(--green-deep);color:var(--cream);">Quero ser franqueado →</a>
+        </div>
+      </div>
+      <div class="franquia-visual reveal reveal-delay-2">
+        <div class="franquia-card-stack">
+          <div class="fcard fcard-1">
+            <div style="font-size:3rem;margin-bottom:16px;">🏪</div>
+            <div class="fcard-1-title">Modelo de Franquia<br/>Comprovado</div>
+            <div class="fcard-1-sub">Suporte total da rede</div>
+          </div>
+          <div class="fcard fcard-2">
+            <div style="font-size:2.5rem;margin-bottom:8px;">📈</div>
+            <div class="fcard-2-num">ROI</div>
+            <div class="fcard-2-label">Retorno em até</div>
+            <div class="fcard-2-num" style="font-size:2rem;">18<span style="font-size:1rem;">meses</span></div>
+            <div class="fcard-2-sub">*Estimativa média</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEPOIMENTOS -->
+  <section class="testimonials">
+    <div class="test-inner">
+      <div class="test-header">
+        <div class="section-label reveal" style="justify-content:center;">O que dizem</div>
+        <h2 class="section-title reveal reveal-delay-1">Histórias que <em>inspiram</em></h2>
+      </div>
+      <div class="test-grid">
+        <div class="test-card reveal">
+          <span class="test-quote">"</span>
+          <p class="test-text">Mudei minha alimentação completamente com a Fiton Me. O açaí de lá é incrível, fresquinho todo dia. Já sou cliente há mais de 2 anos!</p>
+          <div class="test-author">
+            <div class="test-avatar">AM</div>
+            <div>
+              <div class="test-name">Ana M.</div>
+              <div class="test-handle">@ana.fit</div>
+              <div class="test-stars">★★★★★</div>
+            </div>
+          </div>
+        </div>
+        <div class="test-card reveal reveal-delay-1">
+          <span class="test-quote">"</span>
+          <p class="test-text">Como franqueado, recebi todo o suporte necessário. O negócio cresceu muito mais rápido do que esperava. Recomendo de olhos fechados.</p>
+          <div class="test-author">
+            <div class="test-avatar">RB</div>
+            <div>
+              <div class="test-name">Ricardo B.</div>
+              <div class="test-handle">Franqueado SP</div>
+              <div class="test-stars">★★★★★</div>
+            </div>
+          </div>
+        </div>
+        <div class="test-card reveal reveal-delay-2">
+          <span class="test-quote">"</span>
+          <p class="test-text">O smoothie green power virou meu ritual matinal. Sinto a diferença na energia e disposição. Qualidade que você sente no corpo!</p>
+          <div class="test-author">
+            <div class="test-avatar">LC</div>
+            <div>
+              <div class="test-name">Larissa C.</div>
+              <div class="test-handle">@larissa.healthy</div>
+              <div class="test-stars">★★★★★</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UNIDADES -->
+  <div class="unidades" id="unidades">
+    <div class="unit-inner">
+      <div class="unit-header">
+        <div class="section-label">Onde estamos</div>
+        <h2 class="section-title">Nossas <em style="color:var(--green-bright)">Unidades</em></h2>
+      </div>
+      <div class="unit-grid">
+        <div class="unit-card reveal">
+          <div class="unit-city">São Paulo</div>
+          <div class="unit-state">SP — Capital</div>
+          <div class="unit-addr">Diversas unidades na Grande São Paulo. Consulte a mais próxima de você.</div>
+          <a href="https://linktr.ee/unidadesfitonme" target="_blank" class="unit-link">Ver unidades →</a>
+        </div>
+        <div class="unit-card reveal reveal-delay-1">
+          <div class="unit-city">Rio de Janeiro</div>
+          <div class="unit-state">RJ — Capital</div>
+          <div class="unit-addr">Presente nas principais zonas da cidade maravilhosa.</div>
+          <a href="https://linktr.ee/unidadesfitonme" target="_blank" class="unit-link">Ver unidades →</a>
+        </div>
+        <div class="unit-card reveal reveal-delay-2">
+          <div class="unit-city">Minas Gerais</div>
+          <div class="unit-state">MG</div>
+          <div class="unit-addr">Belo Horizonte e região metropolitana com múltiplas unidades.</div>
+          <a href="https://linktr.ee/unidadesfitonme" target="_blank" class="unit-link">Ver unidades →</a>
+        </div>
+        <div class="unit-card reveal reveal-delay-1">
+          <div class="unit-city">Paraná</div>
+          <div class="unit-state">PR</div>
+          <div class="unit-addr">Curitiba e cidades do interior com crescimento acelerado.</div>
+          <a href="https://linktr.ee/unidadesfitonme" target="_blank" class="unit-link">Ver unidades →</a>
+        </div>
+        <div class="unit-card reveal reveal-delay-2">
+          <div class="unit-city">Santa Catarina</div>
+          <div class="unit-state">SC</div>
+          <div class="unit-addr">Florianópolis e região com forte presença da marca.</div>
+          <a href="https://linktr.ee/unidadesfitonme" target="_blank" class="unit-link">Ver unidades →</a>
+        </div>
+        <div class="unit-card reveal reveal-delay-3" style="background:rgba(82,183,136,0.08);border-color:rgba(82,183,136,0.3);">
+          <div class="unit-city">Sua Cidade</div>
+          <div class="unit-state">Em Expansão 🚀</div>
+          <div class="unit-addr">A Fiton Me está expandindo. Seja o primeiro na sua cidade!</div>
+          <a href="https://linktr.ee/unidadesfitonme" target="_blank" class="unit-link" style="color:var(--green-bright);">Seja franqueado →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <div class="section-label reveal">Comece hoje</div>
+      <h2 class="section-title reveal reveal-delay-1">
+        Pronto para viver<br/><em>mais saudável?</em>
+      </h2>
+      <p class="reveal reveal-delay-2">
+        Encontre a unidade mais próxima de você ou descubra como 
+        fazer parte da nossa rede de franqueados em todo o Brasil.
+      </p>
+      <div class="cta-btns reveal reveal-delay-3">
+        <a href="https://linktr.ee/unidadesfitonme" target="_blank" class="btn-dark">🗺️ Encontrar Unidade</a>
+        <a href="https://www.instagram.com/fitonmeoficial/" target="_blank" class="btn-outline-green">📸 Seguir no Instagram</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">Fiton<span>Me</span></div>
+          <p class="footer-tagline">Alimentação saudável que cabe na sua rotina. Fresco, natural e delicioso — todo dia.</p>
+          <div class="footer-socials">
+            <a href="https://www.instagram.com/fitonmeoficial/" target="_blank" class="social-btn">📸</a>
+            <a href="https://linktr.ee/unidadesfitonme" target="_blank" class="social-btn">🌿</a>
+            <a href="#" class="social-btn">💬</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-title">Navegação</div>
+          <ul class="footer-links">
+            <li><a href="#sobre">Sobre nós</a></li>
+            <li><a href="#cardapio">Cardápio</a></li>
+            <li><a href="#franquia">Franquia</a></li>
+            <li><a href="#unidades">Unidades</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Franquia</div>
+          <ul class="footer-links">
+            <li><a href="https://linktr.ee/unidadesfitonme" target="_blank">Seja Franqueado</a></li>
+            <li><a href="#">Modelo de Negócio</a></li>
+            <li><a href="#">Investimento</a></li>
+            <li><a href="#">Suporte</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Contato</div>
+          <ul class="footer-links">
+            <li><a href="https://www.instagram.com/fitonmeoficial/" target="_blank">@fitonmeoficial</a></li>
+            <li><a href="https://linktr.ee/unidadesfitonme" target="_blank">LinkTree Unidades</a></li>
+            <li><a href="#">WhatsApp</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2024 Fiton Me. Todos os direitos reservados.</div>
+        <div class="footer-copy">Feito com 💚 para uma vida mais saudável</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Custom Cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function animateCursor() {
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Navbar scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(r => observer.observe(r));
+
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // Smooth anchor scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
+  </script>
+</body>
+</html>
